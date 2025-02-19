@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Flipbook</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            margin-top: 20px;
+            padding: 10px;
+        }
+
+        .birthday-text {
+            font-size: 2em;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px #ff00ff;
+            }
+
+            100% {
+                text-shadow: 0 0 20px #ffccff;
+            }
+        }
+
+        .flipbook {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            margin: 20px auto;
+            perspective: 1200px;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            transform-origin: left center;
+            transition: transform 1s ease-in-out;
+            backface-visibility: hidden;
+        }
+
+        .page img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .special-page {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(45deg, #ff8c00, #ff0080);
+            color: white;
+            font-size: 1.2em;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        button {
+            background-color: #ffccff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+    <button onclick="document.getElementById('bg-music').play()">Play Music 🎵</button>
+    <div class="container">
+        <h1 class="birthday-text">🎉 Happy Birthday, Bestie! 🎂</h1>
+        <div class="flipbook">
+            <div class="page"><img src="img/img01.jpg" alt="Photo 1"></div>
+            <div class="page"><img src="img/img02.jpg" alt="Photo 2"></div>
+            <div class="page"><img src="img/img03.jpg" alt="Photo 3"></div>
+            <div class="page"><img src="img/img06.jpg" alt="Photo 4"></div>
+            <div class="page"><img src="img/img05.jpg" alt="Photo 5"></div>
+            <div class="page special-page">
+                <h2>🎊 Surprise! 🎊</h2>
+                <p>💖 <strong>Dear Bestie,</strong> 💖</p>
+                <p>You are more than a friend—you are family. Your kindness, laughter, and love make the world brighter.
+                    I’m so lucky to have you in my life! 🌟</p>
+                <p>May this year bring you endless happiness, success, and all the dreams you wish for. 🎂✨</p>
+                <h3>Happy Birthday! 🎉🥳</h3>
+            </div>
+        </div>
+        <button onclick="prevPage()">⏪ Prev</button>
+        <button onclick="nextPage()">Next ⏩</button>
+        <p class="message">Wishing you a day filled with love, laughter, and all the happiness you bring to others! 💖
+        </p>
+    </div>
+    <script>
+        let currentPage = 0;
+        const pages = document.querySelectorAll(".page");
+        const flipSound = new Audio("flip.mp3");
+        function updatePages() {
+            pages.forEach((page, index) => {
+                if (index === currentPage) {
+                    page.style.display = "block";
+                    page.style.transform = "rotateY(0deg)";
+                    page.style.zIndex = pages.length - index;
+                } else if (index < currentPage) {
+                    page.style.display = "block";
+                    page.style.transform = "rotateY(-180deg)";
+                    page.style.zIndex = pages.length - index;
+                } else {
+                    page.style.display = "none";
+                }
+            });
+            if (currentPage === pages.length - 1) {
+                document.querySelector(".special-page").style.display = "flex";
+            }
+        }
+        function nextPage() {
+            if (currentPage < pages.length - 1) {
+                currentPage++;
+                flipSound.play();
+                updatePages();
+            }
+        }
+        function prevPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                flipSound.play();
+                updatePages();
+            }
+        }
+        updatePages();
+    </script>
+</body>
+
+</html>
